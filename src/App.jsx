@@ -199,7 +199,8 @@ export default function App() {
   const completedAttempts = attempts.filter(a => a.status === 'completed').length;
   const failedAttempts = attempts.filter(a => a.status === 'failed' && a.result_details?.result === 'failed').length;
   const inconclusiveAttempts = attempts.filter(a => a.status === 'failed' && a.result_details?.result === 'inconclusive').length;
-  const progressPercent = totalAttempts > 0 ? Math.round((completedAttempts / totalAttempts) * 100) : 0;
+  const finishedAttempts = attempts.filter(a => ['completed', 'failed'].includes(a.status)).length;
+  const progressPercent = totalAttempts > 0 ? Math.round((finishedAttempts / totalAttempts) * 100) : 0;
 
   return (
     <div className="min-h-screen p-6 lg:p-12 text-slate-100 flex flex-col justify-between">
