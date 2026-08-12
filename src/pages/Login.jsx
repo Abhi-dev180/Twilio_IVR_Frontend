@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Activity } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ivr-backend-osqt.onrender.com/api/call';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function Login({ setToken }) {
   const [email, setEmail] = useState('');

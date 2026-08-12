@@ -10,8 +10,8 @@ import LaunchTestCall from '../components/LaunchTestCall';
 import PhoneLinePool from '../components/PhoneLinePool';
 import CallLogs from '../components/CallLogs';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ivr-backend-osqt.onrender.com/api/call';
-const WS_URL = import.meta.env.VITE_WS_URL || 'wss://ivr-backend-osqt.onrender.com';
+const API_BASE = import.meta.env.VITE_API_URL;
+const WS_URL = import.meta.env.VITE_WS_URL;
 
 export default function Dashboard({ token, setToken }) {
   const [lines, setLines] = useState([]);
