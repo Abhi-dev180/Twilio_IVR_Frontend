@@ -81,11 +81,13 @@ export default function Dashboard({ token, setToken }) {
   useEffect(() => {
     fetchData();
 
+    let isMounted = true;
     // Establish WebSocket Connection
     let ws;
     let reconnectTimeout;
 
     function connect() {
+      if (!isMounted) return;
       console.log('Connecting to WebSocket...');
       ws = new WebSocket(WS_URL);
 
@@ -170,7 +172,11 @@ export default function Dashboard({ token, setToken }) {
     connect();
 
     return () => {
-      if (ws) ws.close();
+      isMounted = false;
+      if (ws) {
+        ws.onclose = null; // Prevent ghost reconnects
+        ws.close();
+      }
       clearTimeout(reconnectTimeout);
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
