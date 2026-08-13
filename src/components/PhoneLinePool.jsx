@@ -61,17 +61,23 @@ export default function PhoneLinePool({ lines, handleDeleteLine, handleUpdateLin
                   <>
                     <div>
                       <p className="text-sm font-bold text-slate-300">{line.phone_number}</p>
-                      <p className="text-xs text-slate-500">Processed: {line.attempts_processed} attempts</p>
+                      {line.status === 'busy' && line.current_attempt_id ? (
+                        <p className="text-xs text-blue-400 mt-1 flex flex-col">
+                          <span>Attempt #{line.current_attempt_id}</span>
+                          {line.target_phone_number && <span className="opacity-80 mt-0.5 text-[10px]">To: {line.target_phone_number}</span>}
+                        </p>
+                      ) : (
+                        <p className="text-xs text-slate-500 mt-1">Processed: {line.attempts_processed} attempts</p>
+                      )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        line.status === 'busy' 
-                          ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' 
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${line.status === 'busy'
+                          ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                           : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                      }`}>
+                        }`}>
                         {line.status.toUpperCase()}
                       </span>
-                      
+
                       {/* Actions - Only visible and active when phone line is idle */}
                       {line.status === 'idle' && (
                         <div className="flex gap-1">

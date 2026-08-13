@@ -8,7 +8,11 @@ export default function CampaignControl({
   handleStopCampaign,
   selectedLineId,
   setSelectedLineId,
-  lines
+  lines,
+  testValue,
+  setTestValue,
+  maxRetries,
+  setMaxRetries
 }) {
   return (
     <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md">
@@ -41,6 +45,32 @@ export default function CampaignControl({
           </select>
         </div>
         
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Simulated DTMF Value (16 Digits)</label>
+            <input
+              type="text"
+              maxLength={16}
+              value={testValue}
+              onChange={(e) => setTestValue(e.target.value)}
+              disabled={campaignRunning}
+              className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 transition-colors text-slate-900 focus:bg-white font-mono tracking-wider"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Max Retries on Failure</label>
+            <input
+              type="number"
+              min={0}
+              max={10}
+              value={maxRetries}
+              onChange={(e) => setMaxRetries(parseInt(e.target.value) || 0)}
+              disabled={campaignRunning}
+              className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 transition-colors text-slate-900 focus:bg-white font-mono"
+            />
+          </div>
+        </div>
+
         <div className="flex gap-3 pt-2">
           {!campaignRunning ? (
             <button
