@@ -18,8 +18,22 @@ export default function Loader({
         className="flex flex-col items-center gap-5 z-10"
       >
         <div className="relative w-20 h-20">
-          <div className="absolute inset-0 rounded-2xl border-2 border-blue-500/30 animate-pulse" />
-          <div className="absolute inset-0 rounded-2xl border-2 border-t-blue-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 80 80">
+            <rect
+              x="2" y="2" width="76" height="76" rx="16"
+              fill="none" stroke="currentColor" strokeWidth="4"
+              className="text-blue-500/20"
+            />
+            <motion.rect
+              x="2" y="2" width="76" height="76" rx="16"
+              fill="none" stroke="currentColor" strokeWidth="4"
+              className="text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+              strokeLinecap="round"
+              initial={{ pathLength: 0, pathOffset: 0 }}
+              animate={{ pathLength: [0.1, 0.4, 0.1], pathOffset: [0, 0.6, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <Activity className="w-8 h-8 text-blue-400 animate-pulse" />
           </div>

@@ -490,7 +490,7 @@ export default function Dashboard({ token, setToken }) {
   const attemptStatuses = useRef({});
   const [attempts, setAttempts] = useState([]);
   const [testValue, setTestValue] = useState(() => {
-    return localStorage.getItem('savedTestValue') || '1234567890123456';
+    return localStorage.getItem('savedTestValue') || '4520340097972148';
   });
   const [selectedLineId, setSelectedLineId] = useState('');
   const [targetNumber, setTargetNumber] = useState(() => {
