@@ -45,7 +45,9 @@ export default function ConfigureLinePool({
   newLineNumber,
   setNewLineNumber,
   addingLine,
+  campaignRunning
 }) {
+  const isRunning = addingLine || campaignRunning;
   // E.164 format check (e.g., +1234567890)
   const isValidE164 = /^\+[1-9]\d{1,14}$/.test(newLineNumber.trim());
 
@@ -90,7 +92,7 @@ export default function ConfigureLinePool({
               placeholder="+1234567890"
               value={newLineNumber}
               onChange={(e) => setNewLineNumber(e.target.value)}
-              disabled={addingLine}
+              disabled={isRunning}
               className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
             />
             {isValidE164 ? (
@@ -108,10 +110,10 @@ export default function ConfigureLinePool({
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
-          disabled={addingLine || !isValidE164}
+          disabled={isRunning || !isValidE164}
           className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:from-indigo-700 active:to-blue-700 text-white font-semibold rounded-xl py-3 text-sm transition-all shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
         >
-          {addingLine ? (
+          {isRunning ? (
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Registering Line...</span>

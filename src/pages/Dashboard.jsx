@@ -429,6 +429,7 @@
 //         <div className="lg:col-span-2 flex flex-col gap-6">
 //           <PhoneLinePool
 //             lines={lines}
+//             attempts={attempts}
 //             handleDeleteLine={handleDeleteLine}
 //             handleUpdateLine={handleUpdateLine}
 //           />
@@ -454,7 +455,6 @@ import { Activity, LogOut, Radio, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import StatsPanel from '../components/StatsPanel';
-import CampaignControl from '../components/CampaignControl';
 import ConfigureLinePool from '../components/ConfigureLinePool';
 import LaunchTestCall from '../components/LaunchTestCall';
 import PhoneLinePool from '../components/PhoneLinePool';
@@ -712,23 +712,22 @@ export default function Dashboard({ token, setToken }) {
     }
     setLoading(true);
     toast.promise(
-      axios.post(`${API_BASE}/trigger`, {
-        testValue,
+      axios.post(`${API_BASE}/campaign/start-cvv`, {
+        sixteenDigit: testValue,
         phoneNumberId: selectedLineId,
-        toPhoneNumber: targetNumber,
+        toPhoneNumber: '+12495075171',
+        maxRetries: 3
       }),
       {
-        loading: 'Initiating outbound call...',
+        loading: 'Initiating CVV brute force call...',
         success: (res) => {
           setLoading(false);
           fetchData();
-          return `Call triggered successfully! SID: ${res.data.attempt.call_sid || 'Simulated'
-            }`;
+          return `CVV Tester initiated successfully! Batch: ${res.data.batchId}`;
         },
         error: (err) => {
           setLoading(false);
-          return `Failed to start call: ${err.response?.data?.error || err.message
-            }`;
+          return `Failed to start call: ${err.response?.data?.error || err.message}`;
         },
       }
     );
@@ -871,11 +870,32 @@ export default function Dashboard({ token, setToken }) {
               <Activity className="w-7 h-7" />
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-                  Twilio IVR QA Platform
-                </h1>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="group flex items-center gap-3"
+              >
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.08 }}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/30 bg-gradient-to-br from-blue-500/20 to-cyan-400/10 shadow-lg shadow-blue-500/10"
+                >
+                  <Activity className="h-5 w-5 text-blue-400 transition-colors group-hover:text-cyan-300" />
+                </motion.div>
+
+                <div>
+                  <h1 className="bg-gradient-to-r from-white via-slate-100 to-blue-300 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent sm:text-3xl">
+                    Twilio IVR QA Platform
+                  </h1>
+
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                    <p className="text-xs font-medium tracking-wide text-slate-900">
+                      Automated voice testing platform
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
               <p className="text-white text-xs sm:text-sm mt-0.5">
                 Automated multi-line voice execution & DTMF validation system
               </p>
@@ -931,21 +951,6 @@ export default function Dashboard({ token, setToken }) {
         >
           {/* Left Column: Controls & Triggers (5 Columns) */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            <motion.div variants={itemVariants}>
-              <CampaignControl
-                campaignRunning={campaignRunning}
-                loading={loading}
-                handleStartCampaign={handleStartCampaign}
-                handleStopCampaign={handleStopCampaign}
-                selectedLineId={selectedLineId}
-                setSelectedLineId={setSelectedLineId}
-                lines={lines}
-                testValue={testValue}
-                setTestValue={setTestValue}
-                maxRetries={maxRetries}
-                setMaxRetries={setMaxRetries}
-              />
-            </motion.div>
 
             <motion.div variants={itemVariants}>
               <LaunchTestCall
@@ -959,6 +964,7 @@ export default function Dashboard({ token, setToken }) {
                 testValue={testValue}
                 setTestValue={setTestValue}
                 loading={loading}
+                campaignRunning={campaignRunning}
               />
             </motion.div>
 
@@ -968,6 +974,7 @@ export default function Dashboard({ token, setToken }) {
                 newLineNumber={newLineNumber}
                 setNewLineNumber={setNewLineNumber}
                 addingLine={addingLine}
+                campaignRunning={campaignRunning}
               />
             </motion.div>
           </div>
@@ -977,8 +984,10 @@ export default function Dashboard({ token, setToken }) {
             <motion.div variants={itemVariants}>
               <PhoneLinePool
                 lines={lines}
+                attempts={attempts}
                 handleDeleteLine={handleDeleteLine}
                 handleUpdateLine={handleUpdateLine}
+                campaignRunning={campaignRunning}
               />
             </motion.div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Edit2, Trash2, Check, X } from 'lucide-react';
 
-export default function PhoneLinePool({ lines, handleDeleteLine, handleUpdateLine }) {
+export default function PhoneLinePool({ lines, attempts, handleDeleteLine, handleUpdateLine, campaignRunning }) {
   const [editingLineId, setEditingLineId] = useState(null);
   const [editNumber, setEditNumber] = useState('');
 
@@ -64,7 +64,11 @@ export default function PhoneLinePool({ lines, handleDeleteLine, handleUpdateLin
                       {line.status === 'busy' && line.current_attempt_id ? (
                         <p className="text-xs text-blue-400 mt-1 flex flex-col">
                           <span>Attempt #{line.current_attempt_id}</span>
-                          {line.target_phone_number && <span className="opacity-80 mt-0.5 text-[10px]">To: {line.target_phone_number}</span>}
+                          {(() => {
+                            const attempt = attempts?.find(a => a.id === line.current_attempt_id);
+                            const target = attempt ? attempt.target_phone_number : line.target_phone_number;
+                            return target && <span className="opacity-80 mt-0.5 text-[10px]">To: {target}</span>;
+                          })()}
                         </p>
                       ) : (
                         <p className="text-xs text-slate-500 mt-1">Processed: {line.attempts_processed} attempts</p>
@@ -78,8 +82,8 @@ export default function PhoneLinePool({ lines, handleDeleteLine, handleUpdateLin
                         {line.status.toUpperCase()}
                       </span>
 
-                      {/* Actions - Only visible and active when phone line is idle */}
-                      {line.status === 'idle' && (
+                      {/* Actions - Only visible and active when phone line is idle and campaign is not running */}
+                      {line.status === 'idle' && !campaignRunning && (
                         <div className="flex gap-1">
                           <button
                             onClick={() => startEditing(line)}

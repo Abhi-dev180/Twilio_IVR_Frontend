@@ -102,7 +102,9 @@ export default function LaunchTestCall({
   testValue,
   setTestValue,
   loading,
+  campaignRunning
 }) {
+  const isRunning = loading || campaignRunning;
   const isValidE164 = /^\+[1-9]\d{1,14}$/.test(targetNumber.trim());
   const isValidDtmf = testValue.trim().length === 16;
   const isFormValid = isValidE164 && isValidDtmf && lines.length > 0;
@@ -135,7 +137,7 @@ export default function LaunchTestCall({
             <select
               value={selectedLineId}
               onChange={(e) => setSelectedLineId(e.target.value)}
-              disabled={loading}
+              disabled={isRunning}
               className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer appearance-none shadow-inner"
             >
               {lines.length === 0 ? (
@@ -173,11 +175,9 @@ export default function LaunchTestCall({
           <div className="relative">
             <input
               type="tel"
-              value={targetNumber}
-              onChange={(e) => setTargetNumber(e.target.value)}
-              disabled={loading}
-              placeholder="+1234567890"
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
+              value="+12495075171"
+              readOnly
+              className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500/50 transition-all opacity-70 cursor-not-allowed shadow-inner"
             />
             {isValidE164 ? (
               <CheckCircle2 className="w-4 h-4 text-emerald-500 absolute right-3.5 top-3" />
@@ -209,7 +209,7 @@ export default function LaunchTestCall({
               maxLength={16}
               value={testValue}
               onChange={(e) => setTestValue(e.target.value.replace(/\D/g, ''))}
-              disabled={loading}
+              disabled={isRunning}
               placeholder="4520340097972148"
               className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-widest text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
             />
@@ -229,10 +229,10 @@ export default function LaunchTestCall({
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            disabled={loading || !isFormValid}
+            disabled={isRunning || !isFormValid}
             className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 active:from-blue-700 active:to-indigo-700 text-white font-semibold rounded-xl py-3 text-sm transition-all shadow-lg shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
           >
-            {loading ? (
+            {isRunning ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 <span>Triggering Call...</span>
@@ -245,7 +245,7 @@ export default function LaunchTestCall({
           </motion.button>
 
           <AnimatePresence>
-            {loading && (
+            {isRunning && (
               <motion.button
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: 'auto' }}

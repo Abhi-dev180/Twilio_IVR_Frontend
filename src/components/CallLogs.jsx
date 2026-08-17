@@ -408,8 +408,13 @@ export default function CallLogs({ attempts = [], fetchData }) {
 
                     {/* Numbers display */}
                     <div className="flex items-center gap-2 text-sm font-semibold flex-wrap">
-                      <span className="text-blue-600 break-all">
-                        {attempt.test_value || 'N/A'}
+                      <span className="text-blue-600 break-all flex items-center gap-2">
+                        {attempt.test_value ? attempt.test_value.split(':')[0] : 'N/A'}
+                        {attempt.test_value && attempt.test_value.includes(':') && (
+                          <span className="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-md border border-amber-200 shadow-sm animate-pulse">
+                            CVV Guesses: {parseInt(attempt.test_value.split(':')[1], 10)} / 999
+                          </span>
+                        )}
                       </span>
                       <span className="text-slate-400 font-normal shrink-0">&rsaquo;</span>
                       <span className="text-orange-500 break-all">
@@ -478,8 +483,34 @@ export default function CallLogs({ attempts = [], fetchData }) {
                           </div>
                           <div>
                             <span className="text-slate-500 font-medium">Test Value:</span>
-                            <span className="ml-2 text-slate-700 font-mono font-medium">{attempt.test_value || 'N/A'}</span>
+                            <span className="ml-2 text-slate-700 font-mono font-medium">
+                                {attempt.test_value ? attempt.test_value.split(':')[0] : 'N/A'}
+                            </span>
                           </div>
+                          {attempt.test_value && attempt.test_value.includes(':') && (
+                            <div>
+                              <span className="text-slate-500 font-medium">Current CVV:</span>
+                              <span className="ml-2 text-slate-700 font-mono font-medium">
+                                {attempt.test_value.split(':')[1]}
+                              </span>
+                            </div>
+                          )}
+                          {attempt.target_cvv && (
+                            <div>
+                              <span className="text-slate-500 font-medium">Target CVV (Auto-Gen):</span>
+                              <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded border border-blue-300 font-bold font-mono shadow-sm">
+                                {attempt.target_cvv}
+                              </span>
+                            </div>
+                          )}
+                          {attempt.result_details?.winner && (
+                            <div>
+                              <span className="text-slate-500 font-medium">Discovered OTP/CVV:</span>
+                              <span className="ml-2 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded border border-emerald-300 font-bold font-mono shadow-sm">
+                                {attempt.result_details.winner}
+                              </span>
+                            </div>
+                          )}
                           <div>
                             <span className="text-slate-500 font-medium">To:</span>
                             <span className="ml-2 text-slate-700">{attempt.target_phone_number || attempt.to || 'N/A'}</span>

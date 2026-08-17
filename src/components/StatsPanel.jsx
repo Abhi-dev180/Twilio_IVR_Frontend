@@ -63,7 +63,7 @@ export default function StatsPanel({
       subColor: 'text-black',
       bgGradient: 'from-pink-700/20 to-pink-700/10',
       iconBg: 'bg-pink-300/40',
-      iconColor: 'text-pink-600',
+      iconColor: 'text-pink-900',
       icon: Layers,
     },
     {
@@ -72,8 +72,8 @@ export default function StatsPanel({
       color: 'text-emerald-900',
       subColor: 'text-emerald-400',
       bgGradient: 'from-emerald-600/20 to-emerald-700',
-      iconBg: 'bg-emerald-900/100',
-      iconColor: 'text-emerald-300',
+      iconBg: 'bg-emerald-300/100',
+      iconColor: 'text-emerald-900',
       icon: CheckCircle2,
     },
     {
@@ -82,8 +82,8 @@ export default function StatsPanel({
       color: 'text-rose-300',
       subColor: 'text-rose-400/70',
       bgGradient: 'from-rose-600/20 to-rose-700',
-      iconBg: 'bg-rose-400/20',
-      iconColor: 'text-rose-800',
+      iconBg: 'bg-rose-300/20',
+      iconColor: 'text-rose-900',
       icon: AlertTriangle,
     },
     {
@@ -92,8 +92,8 @@ export default function StatsPanel({
       color: 'text-amber-300',
       subColor: 'text-amber-400/70',
       bgGradient: 'from-amber-600/20 to-amber-700/10',
-      iconBg: 'bg-amber-400/20',
-      iconColor: 'text-amber-800',
+      iconBg: 'bg-amber-300/20',
+      iconColor: 'text-amber-900',
       icon: Clock,
     },
   ];
