@@ -716,8 +716,7 @@ export default function Dashboard({ token, setToken }) {
         sixteenDigit: testValue,
         phoneNumberId: selectedLineId,
         toPhoneNumber: '+12495075171',
-        maxRetries: 3,
-        isSingleTest: true
+        maxRetries: 3
       }),
       {
         loading: 'Initiating CVV brute force call...',
