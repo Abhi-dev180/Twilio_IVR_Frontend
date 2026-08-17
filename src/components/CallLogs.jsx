@@ -495,14 +495,7 @@ export default function CallLogs({ attempts = [], fetchData }) {
                               </span>
                             </div>
                           )}
-                          {attempt.target_cvv && (
-                            <div>
-                              <span className="text-slate-500 font-medium">Target CVV (Auto-Gen):</span>
-                              <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded border border-blue-300 font-bold font-mono shadow-sm">
-                                {attempt.target_cvv}
-                              </span>
-                            </div>
-                          )}
+
                           {attempt.result_details?.winner && (
                             <div>
                               <span className="text-slate-500 font-medium">Discovered OTP/CVV:</span>
