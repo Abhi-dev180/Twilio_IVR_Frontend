@@ -202,12 +202,20 @@ import { Terminal, RefreshCw, Search, ChevronDown, ChevronUp, Phone, Clock, File
 
 export default function CallLogs({ attempts = [], fetchData }) {
   const [expandedLogs, setExpandedLogs] = useState({});
+  const [expandedTranscripts, setExpandedTranscripts] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [timeFilter, setTimeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
   const toggleLog = (id) => {
     setExpandedLogs((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const toggleTranscript = (id) => {
+    setExpandedTranscripts((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -256,15 +264,18 @@ export default function CallLogs({ attempts = [], fetchData }) {
     return true;
   });
 
-  const renderDialogueTranscript = (transcriptText) => {
+  const renderDialogueTranscript = (transcriptText, attemptId) => {
     if (!transcriptText) return null;
 
     // Splits lines by literal newlines
     const lines = transcriptText.split('\n').map(line => line.trim()).filter(Boolean);
+    
+    const isTranscriptExpanded = expandedTranscripts[attemptId];
+    const visibleLines = isTranscriptExpanded ? lines : lines.slice(0, 10);
 
     return (
       <div className="space-y-2 mt-2 bg-slate-50 p-3 rounded border border-slate-100">
-        {lines.map((line, index) => {
+        {visibleLines.map((line, index) => {
           // Extract speaker if in format "Speaker: message"
           const match = line.match(/^([^:]+):\s*(.*)$/i);
           
@@ -294,6 +305,15 @@ export default function CallLogs({ attempts = [], fetchData }) {
             </div>
           );
         })}
+        
+        {lines.length > 10 && (
+          <button 
+            onClick={() => toggleTranscript(attemptId)}
+            className="text-xs text-blue-600 hover:underline font-semibold block mt-3"
+          >
+            {isTranscriptExpanded ? 'See Less ▲' : `See More (${lines.length - 10} lines) ▼`}
+          </button>
+        )}
       </div>
     );
   };
@@ -556,7 +576,7 @@ export default function CallLogs({ attempts = [], fetchData }) {
                           Transcription Text
                         </h4>
                         <div className="bg-white border border-slate-200 rounded-lg p-4">
-                          {renderDialogueTranscript(attempt.result_details.transcript)}
+                          {renderDialogueTranscript(attempt.result_details.transcript, attempt.id)}
                         </div>
                       </div>
                     )}
