@@ -496,6 +496,15 @@ export default function CallLogs({ attempts = [], fetchData }) {
                             </div>
                           )}
 
+                          {attempt.target_test_code && (
+                            <div>
+                              <span className="text-slate-500 font-medium">Target Test code:</span>
+                              <span className="ml-2 text-indigo-700 font-mono font-bold bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm">
+                                {attempt.target_test_code}
+                              </span>
+                            </div>
+                          )}
+
                           {attempt.result_details?.winner && (
                             <div>
                               <span className="text-slate-500 font-medium">Correct Test code:</span>
