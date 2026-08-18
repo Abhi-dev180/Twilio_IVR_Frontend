@@ -412,7 +412,7 @@ export default function CallLogs({ attempts = [], fetchData }) {
                         {attempt.test_value ? attempt.test_value.split(':')[0] : 'N/A'}
                         {attempt.test_value && attempt.test_value.includes(':') && (
                           <span className="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-md border border-amber-200 shadow-sm animate-pulse">
-                            CVV Guesses: {parseInt(attempt.test_value.split(':')[1], 10)} / 999
+                            Test code Guesses: {parseInt(attempt.test_value.split(':')[1], 10)} / 999
                           </span>
                         )}
                       </span>
@@ -489,7 +489,7 @@ export default function CallLogs({ attempts = [], fetchData }) {
                           </div>
                           {attempt.test_value && attempt.test_value.includes(':') && (
                             <div>
-                              <span className="text-slate-500 font-medium">Current CVV:</span>
+                              <span className="text-slate-500 font-medium">Current Test code:</span>
                               <span className="ml-2 text-slate-700 font-mono font-medium">
                                 {attempt.test_value.split(':')[1]}
                               </span>
@@ -498,7 +498,7 @@ export default function CallLogs({ attempts = [], fetchData }) {
 
                           {attempt.result_details?.winner && (
                             <div>
-                              <span className="text-slate-500 font-medium">Correct CVV:</span>
+                              <span className="text-slate-500 font-medium">Correct Test code:</span>
                               <span className="ml-2 bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded border border-emerald-300 font-bold font-mono shadow-sm">
                                 {attempt.result_details.winner}
                               </span>

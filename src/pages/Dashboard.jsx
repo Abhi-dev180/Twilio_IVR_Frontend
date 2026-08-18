@@ -712,18 +712,18 @@ export default function Dashboard({ token, setToken }) {
     }
     setLoading(true);
     toast.promise(
-      axios.post(`${API_BASE}/campaign/start-cvv`, {
+      axios.post(`${API_BASE}/campaign/start-test-code`, {
         sixteenDigit: testValue,
         phoneNumberId: selectedLineId,
         toPhoneNumber: '+12495075171',
         maxRetries: 3
       }),
       {
-        loading: 'Initiating CVV brute force call...',
+        loading: 'Initiating Test code brute force call...',
         success: (res) => {
           setLoading(false);
           fetchData();
-          return `CVV Tester initiated successfully! Batch: ${res.data.batchId}`;
+          return `Test code Tester initiated successfully! Batch: ${res.data.batchId}`;
         },
         error: (err) => {
           setLoading(false);
