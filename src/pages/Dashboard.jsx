@@ -824,13 +824,22 @@ export default function Dashboard({ token, setToken }) {
   const activeFinishedAttempts = activeAttempts.filter((a) =>
     ['completed', 'failed'].includes(a.status)
   ).length;
-  const progressPercent =
-    activeTotalAttempts > 0
-      ? Math.round((activeFinishedAttempts / activeTotalAttempts) * 100)
-      : 0;
+  
+  let progressPercent = 0;
+  if (activeTotalAttempts > 0) {
+    if (activeTotalAttempts === 1 && activeAttempts[0].test_value && activeAttempts[0].test_value.includes(':')) {
+      const currentCode = parseInt(activeAttempts[0].test_value.split(':')[1], 10) || 0;
+      progressPercent = Math.min(100, Math.max(0, Math.round((currentCode / 999) * 100)));
+      if (['completed', 'failed'].includes(activeAttempts[0].status)) {
+        progressPercent = 100;
+      }
+    } else {
+      progressPercent = Math.round((activeFinishedAttempts / activeTotalAttempts) * 100);
+    }
+  }
 
   const showProgress =
-    campaignRunning || (activeTotalAttempts > 0 && progressPercent < 100);
+    campaignRunning || (activeTotalAttempts > 0 && progressPercent < 100) || (activeTotalAttempts === 1 && activeAttempts[0].status === 'active');
 
   if (initialLoading) {
     return <Loader />;
