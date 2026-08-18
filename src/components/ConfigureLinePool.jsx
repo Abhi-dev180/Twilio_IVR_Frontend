@@ -36,6 +36,101 @@
 // }
 
 
+// import React from 'react';
+// import { PlusCircle, PhoneCall, CheckCircle2, ShieldAlert } from 'lucide-react';
+// import { motion } from 'framer-motion';
+
+// export default function ConfigureLinePool({
+//   handleAddLine,
+//   newLineNumber,
+//   setNewLineNumber,
+//   addingLine,
+//   campaignRunning
+// }) {
+//   const isRunning = addingLine || campaignRunning;
+//   // E.164 format check (e.g., +1234567890)
+//   const isValidE164 = /^\+[1-9]\d{1,14}$/.test(newLineNumber.trim());
+
+//   return (
+//     <section className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-2xl relative overflow-hidden transition-all">
+//       {/* Subtle Corner Glow */}
+//       <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+
+//       {/* Header */}
+//       <div className="flex items-center justify-between mb-4">
+//         <h2 className="text-base sm:text-lg font-bold flex items-center gap-2.5 text-slate-100">
+//           <span className="p-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-xl">
+//             <PlusCircle className="w-5 h-5" />
+//           </span>
+//           Configure Line Pool
+//         </h2>
+//         <span className="text-xs font-medium text-slate-400 bg-slate-800/50 px-2.5 py-1 rounded-full border border-slate-700/50">
+//           E.164 Format
+//         </span>
+//       </div>
+
+//       <form onSubmit={handleAddLine} className="space-y-4">
+//         {/* Input Field */}
+//         <div>
+//           <div className="flex items-center justify-between mb-1.5">
+//             <label className="block text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+//               <PhoneCall className="w-3.5 h-3.5 text-slate-400" /> Twilio Phone Number
+//             </label>
+//             {newLineNumber.length > 0 && (
+//               <span
+//                 className={`text-[10px] font-mono font-medium ${isValidE164 ? 'text-emerald-400' : 'text-amber-400'
+//                   }`}
+//               >
+//                 {isValidE164 ? 'Valid Number' : 'Include country code (+)'}
+//               </span>
+//             )}
+//           </div>
+
+//           <div className="relative">
+//             <input
+//               type="tel"
+//               placeholder="+1234567890"
+//               value={newLineNumber}
+//               onChange={(e) => setNewLineNumber(e.target.value)}
+//               disabled={isRunning}
+//               className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
+//             />
+//             {isValidE164 ? (
+//               <CheckCircle2 className="w-4 h-4 text-emerald-500 absolute right-3.5 top-3" />
+//             ) : (
+//               newLineNumber.length > 0 && (
+//                 <ShieldAlert className="w-4 h-4 text-amber-500 absolute right-3.5 top-3" />
+//               )
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Submit Action Button */}
+//         <motion.button
+//           whileHover={{ scale: 1.01 }}
+//           whileTap={{ scale: 0.98 }}
+//           type="submit"
+//           disabled={isRunning || !isValidE164}
+//           className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:from-indigo-700 active:to-blue-700 text-white font-semibold rounded-xl py-3 text-sm transition-all shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+//         >
+//           {isRunning ? (
+//             <div className="flex items-center gap-2">
+//               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+//               <span>Registering Line...</span>
+//             </div>
+//           ) : (
+//             <>
+//               <PlusCircle className="w-4 h-4" /> Register Phone Line
+//             </>
+//           )}
+//         </motion.button>
+//       </form>
+//     </section>
+//   );
+// }
+
+
+
 import React from 'react';
 import { PlusCircle, PhoneCall, CheckCircle2, ShieldAlert } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -45,26 +140,26 @@ export default function ConfigureLinePool({
   newLineNumber,
   setNewLineNumber,
   addingLine,
-  campaignRunning
+  campaignRunning,
 }) {
   const isRunning = addingLine || campaignRunning;
   // E.164 format check (e.g., +1234567890)
   const isValidE164 = /^\+[1-9]\d{1,14}$/.test(newLineNumber.trim());
 
   return (
-    <section className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-2xl relative overflow-hidden transition-all">
+    <section className="bg-white/80 border border-slate-200 backdrop-blur-xl rounded-2xl p-5 sm:p-6 shadow-lg relative overflow-hidden transition-all">
       {/* Subtle Corner Glow */}
-      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-base sm:text-lg font-bold flex items-center gap-2.5 text-slate-100">
-          <span className="p-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-xl">
+      <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+        <h2 className="text-base sm:text-lg font-bold flex items-center gap-2.5 text-slate-800">
+          <span className="p-2 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-xl">
             <PlusCircle className="w-5 h-5" />
           </span>
           Configure Line Pool
         </h2>
-        <span className="text-xs font-medium text-slate-400 bg-slate-800/50 px-2.5 py-1 rounded-full border border-slate-700/50">
+        <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200 whitespace-nowrap">
           E.164 Format
         </span>
       </div>
@@ -72,14 +167,15 @@ export default function ConfigureLinePool({
       <form onSubmit={handleAddLine} className="space-y-4">
         {/* Input Field */}
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+          <div className="flex items-center justify-between mb-1.5 gap-2">
+            <label className="block text-xs font-semibold text-slate-600 flex items-center gap-1.5">
               <PhoneCall className="w-3.5 h-3.5 text-slate-400" /> Twilio Phone Number
             </label>
             {newLineNumber.length > 0 && (
               <span
-                className={`text-[10px] font-mono font-medium ${isValidE164 ? 'text-emerald-400' : 'text-amber-400'
-                  }`}
+                className={`text-[10px] font-mono font-medium whitespace-nowrap ${
+                  isValidE164 ? 'text-emerald-600' : 'text-amber-600'
+                }`}
               >
                 {isValidE164 ? 'Valid Number' : 'Include country code (+)'}
               </span>
@@ -93,13 +189,13 @@ export default function ConfigureLinePool({
               value={newLineNumber}
               onChange={(e) => setNewLineNumber(e.target.value)}
               disabled={isRunning}
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
+              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-mono tracking-wider text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             />
             {isValidE164 ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 absolute right-3.5 top-3" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
             ) : (
               newLineNumber.length > 0 && (
-                <ShieldAlert className="w-4 h-4 text-amber-500 absolute right-3.5 top-3" />
+                <ShieldAlert className="w-4 h-4 text-amber-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
               )
             )}
           </div>
@@ -111,16 +207,16 @@ export default function ConfigureLinePool({
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={isRunning || !isValidE164}
-          className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:from-indigo-700 active:to-blue-700 text-white font-semibold rounded-xl py-3 text-sm transition-all shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:from-indigo-700 active:to-blue-700 text-white font-semibold rounded-xl py-3 text-sm transition-all shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 min-w-0"
         >
           {isRunning ? (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              <span>Registering Line...</span>
-            </div>
+            <span className="flex items-center gap-2">
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
+              <span className="truncate">Registering Line...</span>
+            </span>
           ) : (
             <>
-              <PlusCircle className="w-4 h-4" /> Register Phone Line
+              <PlusCircle className="w-4 h-4 shrink-0" /> <span className="truncate">Register Phone Line</span>
             </>
           )}
         </motion.button>

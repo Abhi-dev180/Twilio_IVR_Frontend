@@ -163,13 +163,368 @@
 // }
 
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import toast from 'react-hot-toast';
+// import { Eye, EyeOff, Activity, Phone, ShieldCheck, Zap, BarChart3 } from 'lucide-react';
+// import { motion } from 'framer-motion';
+
+// const API_BASE = import.meta.env.VITE_API_URL;
+
+// export default function Login({ setToken }) {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [error, setError] = useState('');
+//   const [loading, setLoading] = useState(false);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError('');
+
+//     if (!email) {
+//       setError('Email address is required.');
+//       return;
+//     }
+//     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+//       setError('Please enter a valid email address.');
+//       return;
+//     }
+//     if (!password) {
+//       setError('Password is required.');
+//       return;
+//     }
+//     if (password.length < 6) {
+//       setError('Password must be at least 6 characters long.');
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       const response = await axios.post(`${API_BASE}/auth/login`, { email, password });
+//       const { token, message } = response.data;
+//       toast.success(message || 'Login successful!');
+//       localStorage.setItem('adminToken', token);
+//       setToken(token);
+//     } catch (err) {
+//       const errMsg = err.response?.data?.error || 'Failed to authenticate.';
+//       setError(errMsg);
+//       toast.error(errMsg);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Animation variants
+//   const containerVariants = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         staggerChildren: 0.15,
+//         delayChildren: 0.2,
+//       },
+//     },
+//   };
+
+//   const itemVariants = {
+//     hidden: { opacity: 0, y: 25 },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+//     },
+//   };
+
+//   const floatingVariants = {
+//     animate: {
+//       y: [0, -12, 0],
+//       transition: {
+//         duration: 4,
+//         repeat: Infinity,
+//         ease: 'easeInOut',
+//       },
+//     },
+//   };
+
+//   return (
+//     <div className="min-h-screen flex font-sans bg-slate-950 overflow-hidden">
+//       {/* ================= LEFT SIDE ================= */}
+//       <div className="hidden lg:flex lg:w-[48%] relative overflow-hidden items-center justify-center">
+//         {/* Background layers */}
+//         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950" />
+
+//         {/* Animated gradient orbs */}
+//         <motion.div
+//           className="absolute -top-32 -left-32 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl"
+//           animate={{
+//             scale: [1, 1.2, 1],
+//             opacity: [0.3, 0.5, 0.3],
+//           }}
+//           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+//         />
+//         <motion.div
+//           className="absolute bottom-0 right-0 w-80 h-80 bg-indigo-500/25 rounded-full blur-3xl"
+//           animate={{
+//             scale: [1, 1.15, 1],
+//             opacity: [0.25, 0.4, 0.25],
+//           }}
+//           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+//         />
+
+//         {/* Grid pattern overlay */}
+//         <div
+//           className="absolute inset-0 opacity-[0.07]"
+//           style={{
+//             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+//                               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+//             backgroundSize: '40px 40px',
+//           }}
+//         />
+
+//         {/* Main content */}
+//         <motion.div
+//           className="relative z-10 px-14 max-w-lg"
+//           variants={containerVariants}
+//           initial="hidden"
+//           animate="visible"
+//         >
+//           {/* Logo / Icon */}
+//           <motion.div variants={itemVariants} className="mb-10">
+//             <div className="relative inline-flex">
+//               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+//                 <Activity className="w-8 h-8 text-white" />
+//               </div>
+//               <motion.div
+//                 className="absolute -inset-1 bg-blue-400/40 rounded-2xl blur-md -z-10"
+//                 animate={{ opacity: [0.4, 0.7, 0.4] }}
+//                 transition={{ duration: 2.5, repeat: Infinity }}
+//               />
+//             </div>
+//           </motion.div>
+
+//           {/* Headline */}
+//           <motion.div
+//             variants={itemVariants}
+//             className="text-4xl xl:text-5xl font-extrabold text-white leading-[1.15] tracking-tight mb-5"
+//           >
+//             Automate Your
+//             <br />
+//             <span className="bg-gradient-to-r from-blue-300 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
+//               IVR Testing
+//             </span>
+//           </motion.div>
+
+//           {/* Description */}
+//           <motion.p
+//             variants={itemVariants}
+//             className="text-gray-300/90 text-lg leading-relaxed mb-12 max-w-md"
+//           >
+//             Validate complex IVR flows, run multi-line dialing tests, and deliver seamless customer experiences — all from one powerful platform.
+//           </motion.p>
+
+//           {/* Feature cards */}
+//           <motion.div variants={itemVariants} className="space-y-4">
+//             {[
+//               { icon: Phone, title: 'Multi-line Dialing', desc: 'Test hundreds of concurrent calls' },
+//               { icon: ShieldCheck, title: 'Flow Validation', desc: 'Catch broken paths before customers do' },
+//               { icon: BarChart3, title: 'Real-time Analytics', desc: 'Instant insights & detailed reports' },
+//             ].map((feature, i) => (
+//               <motion.div
+//                 key={feature.title}
+//                 className="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300"
+//                 whileHover={{ x: 6 }}
+//                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+//               >
+//                 <div className="mt-0.5 w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+//                   <feature.icon className="w-5 h-5 text-blue-300" />
+//                 </div>
+//                 <div>
+//                   <p className="text-white font-semibold text-sm">{feature.title}</p>
+//                   <p className="text-slate-400 text-xs mt-0.5">{feature.desc}</p>
+//                 </div>
+//               </motion.div>
+//             ))}
+//           </motion.div>
+//         </motion.div>
+
+//         {/* Decorative floating elements */}
+//         <motion.div
+//           className="absolute top-24 right-16 w-3 h-3 rounded-full bg-blue-400/60"
+//           variants={floatingVariants}
+//           animate="animate"
+//         />
+//         <motion.div
+//           className="absolute bottom-32 left-20 w-2 h-2 rounded-full bg-indigo-400/50"
+//           variants={floatingVariants}
+//           animate="animate"
+//           transition={{ delay: 1.2 }}
+//         />
+//         <motion.div
+//           className="absolute top-1/2 right-10 w-1.5 h-1.5 rounded-full bg-sky-300/70"
+//           variants={floatingVariants}
+//           animate="animate"
+//           transition={{ delay: 0.6 }}
+//         />
+//       </div>
+
+//       {/* ================= RIGHT SIDE ================= */}
+//       <div className="w-full lg:w-[52%] bg-slate-50 flex items-center justify-center p-6 sm:p-10">
+//         <motion.div
+//           initial={{ opacity: 0, x: 30 }}
+//           animate={{ opacity: 1, x: 0 }}
+//           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+//           className="w-full max-w-[420px]"
+//         >
+//           <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50">
+//             {/* Mobile logo */}
+//             <div className="lg:hidden mb-7 flex items-center gap-2.5">
+//               <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+//                 <Activity className="w-5 h-5 text-white" />
+//               </div>
+//               <span className="text-sm font-semibold text-slate-700 tracking-wide">IVR QA Platform</span>
+//             </div>
+
+//             {/* Header */}
+//             <div className="mb-8">
+//               <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+//                 Welcome back
+//               </h1>
+//               <p className="text-slate-500 text-sm mt-2">
+//                 Enter your credentials to access the platform
+//               </p>
+//             </div>
+
+//             {/* Error message */}
+//             {error && (
+//               <motion.div
+//                 initial={{ opacity: 0, y: -8 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 className="mb-5 p-3.5 bg-rose-50 border border-rose-200/80 rounded-xl text-rose-700 text-sm font-medium text-center"
+//               >
+//                 {error}
+//               </motion.div>
+//             )}
+
+//             <form onSubmit={handleSubmit} className="space-y-5">
+//               {/* Email */}
+//               <div>
+//                 <label className="block text-sm font-medium text-slate-700 mb-1.5">
+//                   Email address
+//                 </label>
+//                 <input
+//                   type="email"
+//                   placeholder="you@company.com"
+//                   value={email}
+//                   onChange={(e) => {
+//                     setEmail(e.target.value);
+//                     setError('');
+//                   }}
+//                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
+//                 />
+//               </div>
+
+//               {/* Password */}
+//               <div>
+//                 <label className="block text-sm font-medium text-slate-700 mb-1.5">
+//                   Password
+//                 </label>
+//                 <div className="relative">
+//                   <input
+//                     type={showPassword ? 'text' : 'password'}
+//                     placeholder="••••••••"
+//                     value={password}
+//                     onChange={(e) => {
+//                       setPassword(e.target.value);
+//                       setError('');
+//                     }}
+//                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowPassword(!showPassword)}
+//                     className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+//                   >
+//                     {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* Forgot password */}
+//               <div className="flex justify-end">
+//                 <a
+//                   href="#forgot"
+//                   className="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline underline-offset-2"
+//                 >
+//                   Forgot password?
+//                 </a>
+//               </div>
+
+//               {/* Submit button */}
+//               <motion.button
+//                 type="submit"
+//                 disabled={loading}
+//                 whileHover={{ scale: loading ? 1 : 1.015 }}
+//                 whileTap={{ scale: loading ? 1 : 0.985 }}
+//                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl py-3.5 text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+//               >
+//                 {loading ? (
+//                   <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+//                 ) : (
+//                   <>
+//                     Sign in
+//                     <Zap className="w-4 h-4 opacity-80" />
+//                   </>
+//                 )}
+//               </motion.button>
+//             </form>
+//           </div>
+
+//           {/* Footer text */}
+//           <p className="text-center text-xs text-slate-400 mt-6">
+//             Secure access • IVR QA Platform
+//           </p>
+//         </motion.div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Eye, EyeOff, Activity, Phone, ShieldCheck, Zap, BarChart3 } from 'lucide-react';
+import { Eye, EyeOff, Activity, Phone, ShieldCheck, Zap, BarChart3, Mail, Lock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const API_BASE = import.meta.env.VITE_API_URL;
+
+// Bar heights (as % of container) for the signature "call waveform" motif.
+// A fixed pattern reads as a real audio signal rather than random noise.
+const WAVEFORM_BARS = [30, 55, 40, 75, 50, 90, 60, 35, 70, 45, 85, 55, 30, 65, 40];
+
+function Waveform({ className = '', barClassName = 'bg-blue-400/70', size = 'md' }) {
+  const heights = size === 'sm' ? WAVEFORM_BARS.slice(0, 9) : WAVEFORM_BARS;
+  return (
+    <div className={`flex items-center gap-[3px] ${className}`} aria-hidden="true">
+      {heights.map((h, i) => (
+        <motion.span
+          key={i}
+          className={`w-[3px] rounded-full ${barClassName}`}
+          style={{ height: `${h}%` }}
+          initial={{ scaleY: 0.3 }}
+          animate={{ scaleY: [0.3, 1, 0.3] }}
+          transition={{
+            duration: 1.6 + (i % 4) * 0.2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: i * 0.06,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function Login({ setToken }) {
   const [email, setEmail] = useState('');
@@ -248,8 +603,50 @@ export default function Login({ setToken }) {
   };
 
   return (
-    <div className="min-h-screen flex font-sans bg-slate-950 overflow-hidden">
-      {/* ================= LEFT SIDE ================= */}
+    <div className="min-h-screen flex flex-col lg:flex-row font-sans bg-slate-950 overflow-hidden">
+      {/* ================= MOBILE / TABLET TOP BANNER (hidden on lg+) ================= */}
+      <div className="lg:hidden relative overflow-hidden bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 px-6 pt-8 pb-10 sm:px-10 sm:pt-10 sm:pb-12">
+        <div
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '32px 32px',
+          }}
+        />
+        <motion.div
+          className="absolute -top-20 -right-16 w-64 h-64 bg-blue-600/25 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="relative z-10 flex items-center justify-between"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <Activity className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-sm font-semibold text-white tracking-wide">IVR QA Platform</span>
+          </div>
+          <Waveform size="sm" className="h-6" />
+        </motion.div>
+        <motion.h1
+          className="relative z-10 mt-6 text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Automate your{' '}
+          <span className="bg-gradient-to-r from-blue-300 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
+            IVR testing
+          </span>
+        </motion.h1>
+      </div>
+
+      {/* ================= LEFT SIDE (desktop hero, lg+) ================= */}
       <div className="hidden lg:flex lg:w-[48%] relative overflow-hidden items-center justify-center">
         {/* Background layers */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950" />
@@ -284,13 +681,13 @@ export default function Login({ setToken }) {
 
         {/* Main content */}
         <motion.div
-          className="relative z-10 px-14 max-w-lg"
+          className="relative z-10 px-10 xl:px-14 max-w-lg"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Logo / Icon */}
-          <motion.div variants={itemVariants} className="mb-10">
+          <motion.div variants={itemVariants} className="mb-8 flex items-center gap-4">
             <div className="relative inline-flex">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                 <Activity className="w-8 h-8 text-white" />
@@ -301,6 +698,9 @@ export default function Login({ setToken }) {
                 transition={{ duration: 2.5, repeat: Infinity }}
               />
             </div>
+            {/* Signature element: a live "call waveform" — the one thing this
+                page is built around, echoing the audio signal of a real IVR call. */}
+            <Waveform className="h-10" />
           </motion.div>
 
           {/* Headline */}
@@ -329,7 +729,7 @@ export default function Login({ setToken }) {
               { icon: Phone, title: 'Multi-line Dialing', desc: 'Test hundreds of concurrent calls' },
               { icon: ShieldCheck, title: 'Flow Validation', desc: 'Catch broken paths before customers do' },
               { icon: BarChart3, title: 'Real-time Analytics', desc: 'Instant insights & detailed reports' },
-            ].map((feature, i) => (
+            ].map((feature) => (
               <motion.div
                 key={feature.title}
                 className="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors duration-300"
@@ -368,120 +768,131 @@ export default function Login({ setToken }) {
         />
       </div>
 
-      {/* ================= RIGHT SIDE ================= */}
-      <div className="w-full lg:w-[52%] bg-slate-50 flex items-center justify-center p-6 sm:p-10">
+      {/* ================= RIGHT SIDE (form) ================= */}
+      <div className="w-full lg:w-[52%] flex-1 bg-slate-50 flex items-center justify-center px-5 py-8 sm:px-10 sm:py-12">
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full max-w-[420px]"
+          className="w-full max-w-[440px] -mt-12 sm:-mt-14 lg:mt-0"
         >
-          <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50">
-            {/* Mobile logo */}
-            <div className="lg:hidden mb-7 flex items-center gap-2.5">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                <Activity className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-sm font-semibold text-slate-700 tracking-wide">IVR QA Platform</span>
-            </div>
+          <div className="bg-white border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden">
+            {/* Accent bar ties the card back to the brand gradient */}
+            <div className="h-1.5 bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500" />
 
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-                Welcome back
-              </h1>
-              <p className="text-slate-500 text-sm mt-2">
-                Enter your credentials to access the platform
-              </p>
-            </div>
-
-            {/* Error message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-5 p-3.5 bg-rose-50 border border-rose-200/80 rounded-xl text-rose-700 text-sm font-medium text-center"
-              >
-                {error}
-              </motion.div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError('');
-                  }}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
-                />
-              </div>
-
-              {/* Password */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setError('');
-                    }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pr-11 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
-                  </button>
+            <div className="p-6 sm:p-9 lg:p-10">
+              {/* Desktop-only logo (mobile already has the top banner) */}
+              <div className="hidden lg:flex mb-7 items-center gap-2.5">
+                <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-white" />
                 </div>
+                <span className="text-sm font-semibold text-slate-700 tracking-wide">IVR QA Platform</span>
               </div>
 
-              {/* Forgot password */}
-              <div className="flex justify-end">
-                <a
-                  href="#forgot"
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline underline-offset-2"
+              {/* Header */}
+              <div className="mb-7 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                  Welcome back
+                </h1>
+                <p className="text-slate-500 text-sm mt-2">
+                  Enter your credentials to access the platform
+                </p>
+              </div>
+
+              {/* Error message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-5 p-3.5 bg-rose-50 border border-rose-200/80 rounded-xl text-rose-700 text-sm font-medium text-center"
                 >
-                  Forgot password?
-                </a>
-              </div>
+                  {error}
+                </motion.div>
+              )}
 
-              {/* Submit button */}
-              <motion.button
-                type="submit"
-                disabled={loading}
-                whileHover={{ scale: loading ? 1 : 1.015 }}
-                whileTap={{ scale: loading ? 1 : 0.985 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl py-3.5 text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    Sign in
-                    <Zap className="w-4 h-4 opacity-80" />
-                  </>
-                )}
-              </motion.button>
-            </form>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@company.com"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setError('');
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-sm font-medium text-slate-700">
+                      Password
+                    </label>
+                    <a
+                      href="#forgot"
+                      className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline underline-offset-2"
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setError('');
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-11 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 focus:bg-white transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors focus:outline-none focus-visible:text-blue-600"
+                    >
+                      {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Submit button */}
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  whileHover={{ scale: loading ? 1 : 1.015 }}
+                  whileTap={{ scale: loading ? 1 : 0.985 }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl py-3.5 text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  {loading ? (
+                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      Sign in
+                      <ArrowRight className="w-4 h-4 opacity-80" />
+                    </>
+                  )}
+                </motion.button>
+              </form>
+            </div>
           </div>
 
           {/* Footer text */}
-          <p className="text-center text-xs text-slate-400 mt-6">
+          <p className="text-center text-xs text-slate-400 mt-6 flex items-center justify-center gap-1.5">
+            <Zap className="w-3.5 h-3.5" />
             Secure access • IVR QA Platform
           </p>
         </motion.div>
