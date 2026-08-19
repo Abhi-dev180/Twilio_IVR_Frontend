@@ -269,7 +269,7 @@
 
 //     // Splits lines by literal newlines
 //     const lines = transcriptText.split('\n').map(line => line.trim()).filter(Boolean);
-    
+
 //     const isTranscriptExpanded = expandedTranscripts[attemptId];
 //     const visibleLines = isTranscriptExpanded ? lines : lines.slice(0, 10);
 
@@ -278,14 +278,14 @@
 //         {visibleLines.map((line, index) => {
 //           // Extract speaker if in format "Speaker: message"
 //           const match = line.match(/^([^:]+):\s*(.*)$/i);
-          
+
 //           if (match) {
 //             const speaker = match[1].trim();
 //             const text = match[2].trim();
-            
+
 //             // Color 'System' or 'User' slightly differently than the IVR
 //             const isSystem = speaker.toLowerCase() === 'system' || speaker.toLowerCase() === 'user';
-            
+
 //             return (
 //               <div key={index} className="text-[13px] leading-relaxed mb-1.5">
 //                 <p className={isSystem ? "text-blue-700" : "text-slate-700"}>
@@ -305,7 +305,7 @@
 //             </div>
 //           );
 //         })}
-        
+
 //         {lines.length > 10 && (
 //           <button 
 //             onClick={() => toggleTranscript(attemptId)}
@@ -664,7 +664,7 @@ const SAMPLE_ATTEMPTS = [
   },
 ];
 
-export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () => {} }) {
+export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () => { } }) {
   const [expandedLogs, setExpandedLogs] = useState({});
   const [expandedTranscripts, setExpandedTranscripts] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
@@ -748,41 +748,45 @@ export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () =>
     const visibleLines = isTranscriptExpanded ? lines : lines.slice(0, 10);
 
     return (
-      <div className="space-y-1.5 sm:space-y-2 mt-2 bg-slate-50 p-2.5 sm:p-3 rounded-lg border border-slate-100">
-        {visibleLines.map((line, index) => {
-          const match = line.match(/^([^:]+):\s*(.*)$/i);
+      <div className="mt-2 bg-slate-50 p-2.5 sm:p-3 rounded-lg border border-slate-100 flex flex-col">
+        <div className={`space-y-1.5 sm:space-y-2 ${isTranscriptExpanded ? 'max-h-60 overflow-y-auto pr-2 custom-scrollbar' : ''}`}>
+          {visibleLines.map((line, index) => {
+            const match = line.match(/^([^:]+):\s*(.*)$/i);
 
-          if (match) {
-            const speaker = match[1].trim();
-            const text = match[2].trim();
-            const isSystem = speaker.toLowerCase() === 'system' || speaker.toLowerCase() === 'user';
+            if (match) {
+              const speaker = match[1].trim();
+              const text = match[2].trim();
+              const isSystem = speaker.toLowerCase() === 'system' || speaker.toLowerCase() === 'user';
+
+              return (
+                <div key={index} className="text-[12.5px] sm:text-[13px] leading-relaxed">
+                  <p className={isSystem ? 'text-blue-700' : 'text-slate-700'}>
+                    <span className={`font-bold ${isSystem ? 'text-blue-900' : 'text-slate-900'}`}>
+                      {speaker}:{' '}
+                    </span>
+                    {text}
+                  </p>
+                </div>
+              );
+            }
 
             return (
               <div key={index} className="text-[12.5px] sm:text-[13px] leading-relaxed">
-                <p className={isSystem ? 'text-blue-700' : 'text-slate-700'}>
-                  <span className={`font-bold ${isSystem ? 'text-blue-900' : 'text-slate-900'}`}>
-                    {speaker}:{' '}
-                  </span>
-                  {text}
-                </p>
+                <p className="text-slate-600 italic">{line}</p>
               </div>
             );
-          }
-
-          return (
-            <div key={index} className="text-[12.5px] sm:text-[13px] leading-relaxed">
-              <p className="text-slate-600 italic">{line}</p>
-            </div>
-          );
-        })}
+          })}
+        </div>
 
         {lines.length > 10 && (
-          <button
-            onClick={() => toggleTranscript(attemptId)}
-            className="text-xs text-blue-600 hover:text-blue-700 hover:underline font-semibold block mt-2 sm:mt-3"
-          >
-            {isTranscriptExpanded ? 'See less ▲' : `See more (${lines.length - 10} lines) ▼`}
-          </button>
+          <div className={isTranscriptExpanded ? "pt-2 sm:pt-3 mt-2 sm:mt-3 border-t border-slate-200 shrink-0" : ""}>
+            <button
+              onClick={() => toggleTranscript(attemptId)}
+              className={`text-xs text-blue-600 hover:text-blue-700 hover:underline font-semibold block ${!isTranscriptExpanded ? 'mt-2 sm:mt-3' : ''}`}
+            >
+              {isTranscriptExpanded ? 'See less ▲' : `See more (${lines.length - 10} lines) ▼`}
+            </button>
+          </div>
         )}
       </div>
     );
@@ -941,9 +945,8 @@ export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () =>
                         </span>
                       )}
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold border shrink-0 ${
-                          statusStyles[status] || statusStyles.active
-                        }`}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold border shrink-0 ${statusStyles[status] || statusStyles.active
+                          }`}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${statusDot[status] || statusDot.active}`} />
                         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -999,7 +1002,7 @@ export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () =>
                             </div>
                           )}
 
-                          {attempt.target_test_code && (
+                          {attempt.target_test_code && attempt.status === 'completed' && (
                             <div>
                               <span className="text-slate-500 font-medium">Target Test code:</span>
                               <span className="ml-2 text-indigo-700 font-mono font-bold bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm">
@@ -1067,12 +1070,39 @@ export default function CallLogs({ attempts = SAMPLE_ATTEMPTS, fetchData = () =>
                     {attempt.logs && attempt.logs.length > 0 && (
                       <div>
                         <h4 className="text-xs font-bold text-slate-500 mb-1.5">Execution Logs</h4>
-                        <div className="bg-slate-900 text-slate-300 font-mono text-[10.5px] sm:text-[11px] p-2.5 sm:p-3 rounded-lg space-y-1 max-h-40 overflow-y-auto">
-                          {attempt.logs.map((log, index) => (
-                            <div key={index} className="whitespace-pre-wrap break-all">
-                              {log}
-                            </div>
-                          ))}
+                        <div className="bg-slate-900 text-slate-300 font-mono text-[10.5px] sm:text-[11px] p-2.5 sm:p-3 rounded-lg space-y-1 max-h-[400px] overflow-y-auto custom-scrollbar">
+                          {attempt.logs.map((log, index) => {
+                            const match = log.match(/^(\[[^\]]+\])\s*(.*)$/);
+                            if (!match) {
+                              return (
+                                <div key={index} className="whitespace-pre-wrap break-all">
+                                  {log}
+                                </div>
+                              );
+                            }
+                            const time = match[1];
+                            const text = match[2];
+                            
+                            let icon = '';
+                            const lowerText = text.toLowerCase();
+                            if (lowerText.includes('failed') || lowerText.includes('canceled') || lowerText.includes('incorrect') || lowerText.includes('error')) {
+                              icon = '❌';
+                            } else if (lowerText.includes('processed') || lowerText.includes('completed') || lowerText.includes('success')) {
+                              icon = '✅';
+                            } else if (lowerText.includes('start') || lowerText.includes('initiate')) {
+                              icon = '✅';
+                            }
+
+                            return (
+                              <div key={index} className="whitespace-pre-wrap break-all flex items-start gap-1.5">
+                                <span className="text-[9px] text-slate-500 shrink-0 mt-[1px]">{time}</span>
+                                <span>
+                                  {icon && <span className="mr-1">{icon}</span>}
+                                  <span className={icon === '❌' ? 'text-red-400' : ''}>{text}</span>
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}

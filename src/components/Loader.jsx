@@ -107,7 +107,7 @@ export default function Loader({
               height="76"
               rx="16"
               fill="none"
-              stroke="#3b82f6"
+              stroke="#ffffffff"
               strokeWidth="4"
               strokeLinecap="round"
               className="drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
