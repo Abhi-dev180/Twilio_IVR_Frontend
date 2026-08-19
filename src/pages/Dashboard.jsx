@@ -1545,13 +1545,13 @@ export default function Dashboard({ token, setToken }) {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <ConfigureLinePool
+              {/* <ConfigureLinePool
                 handleAddLine={handleAddLine}
                 newLineNumber={newLineNumber}
                 setNewLineNumber={setNewLineNumber}
                 addingLine={addingLine}
                 campaignRunning={campaignRunning}
-              />
+              /> */}
             </motion.div>
           </div>
 
