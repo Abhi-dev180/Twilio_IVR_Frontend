@@ -1106,9 +1106,12 @@ export default function Dashboard({ token, setToken }) {
       (response) => response,
       (error) => {
         if (error.response && [401, 403].includes(error.response.status)) {
+          console.error('[Axios Interceptor] 401/403 Error on URL:', error.config.url, '- Response:', error.response.data);
           localStorage.removeItem('adminToken');
           setToken('');
           toast.error('Session expired. Please log in again.');
+        } else {
+          console.error('[Axios Interceptor] Network or API error:', error.message, error.response?.data);
         }
         return Promise.reject(error);
       }
@@ -1150,10 +1153,20 @@ export default function Dashboard({ token, setToken }) {
     let ws;
     let reconnectTimeout;
 
+    let reconnectToastId = null;
+
     function connect() {
       if (!isMounted) return;
       console.log('Connecting to WebSocket...');
       ws = new WebSocket(WS_URL);
+
+      ws.onopen = () => {
+        console.log('WebSocket connected successfully.');
+        if (reconnectToastId) {
+          toast.success('Connected to live logs backend!', { id: reconnectToastId });
+          reconnectToastId = null;
+        }
+      };
 
       ws.onmessage = (event) => {
         try {
@@ -1206,13 +1219,17 @@ export default function Dashboard({ token, setToken }) {
       };
 
       ws.onclose = () => {
-        console.log('WebSocket connection closed. Reconnecting in 3s...');
-        reconnectTimeout = setTimeout(connect, 3000);
+        if (!isMounted) return;
+        console.log('WebSocket connection closed. Reconnecting in 5s...');
+        if (!reconnectToastId) {
+          reconnectToastId = toast.loading('Connecting to backend (Waking up server)...', { duration: Infinity });
+        }
+        reconnectTimeout = setTimeout(connect, 5000);
       };
 
       ws.onerror = (err) => {
         console.error('WebSocket encountered an error:', err);
-        ws.close();
+        // Do not call ws.close() here if it's already closing/closed to avoid loop
       };
     }
 
